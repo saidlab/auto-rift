@@ -29,6 +29,7 @@ local Emojis,content = {
 	['bubble-rift'] = "<:Bubbles:1362512396991725688>",
 	['silly-egg'] = "<:Silly_Egg:1369738286393856090>",
 	['dice-chest'] = "<:Dice_Key:1369744114849153184>",
+	['dice-rift'] = "<:Dice_Key:1369744114849153184>",
 },""
 
 for _, rift in ipairs(riftFolder:GetChildren()) do
