@@ -86,7 +86,7 @@ else
 	print("[Webhook] Mensagem enviada com sucesso! Código de status:", response.StatusCode or response.statusCode)
 end
 
-queue_on_teleport("_G.Webhook = ".._G.Webhook.." loadstring(game:HttpGet('https://raw.githubusercontent.com/saidlab/auto-rift/refs/heads/main/test.lua'))()")
+queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/saidlab/auto-rift/refs/heads/main/test.lua'))()")
 
 task.wait(30)
 
