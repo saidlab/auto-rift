@@ -1,3 +1,5 @@
+print('Loaded script')
+
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
@@ -56,7 +58,7 @@ local payload = {
 	content = content,
 	embeds = {
 		{
-			title       = "📢 NOTIFICAÇÃO RIFT SERVER",
+			title       = "📢 NOTIFICAÇÃO RIFT SERVER TEST",
 			description = message .. "\nColoque o link no Navegador para entrar no Servidor```roblox://experiences/start?placeId=85896571713843&gameInstanceId="..game.JobId.."```",
 			color       = 0xFFFF00,
 			timestamp   = DateTime.now():ToIsoDate()
@@ -83,40 +85,36 @@ else
 	print("[Webhook] Mensagem enviada com sucesso! Código de status:", response.StatusCode or response.statusCode)
 end
 
-task.wait(30)
-
 queue_on_teleport(`_G.Webhook = {_G.Webhook} loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/saidlab/auto-rift/refs/heads/main/test.lua"))()`)
+
+task.wait(30)
 
 print('Telepote Function')
 
-local function RejoinGame()
-	local cursor,found = "",false
-	while not found do
-		local fullUrl = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"
-		if cursor ~= "" then
-			fullUrl = fullUrl.."&cursor="..cursor
+local cursor,found = "",false
+while not found do
+	local fullUrl = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"
+	if cursor ~= "" then
+		fullUrl = fullUrl.."&cursor="..cursor
+	end
+	local success, result = pcall(function()
+		return HttpService:JSONDecode(game:HttpGet(fullUrl))
+	end)
+	if success and result and result.data then
+		for _, server in ipairs(result.data) do
+			if server.playing < server.maxPlayers and server.id ~= game.JobId then
+				found = true
+				TeleportService:TeleportToPlaceInstance(game.PlaceId, server.id, LocalPlayer)
+				return
+			end
 		end
-		local success, result = pcall(function()
-			return HttpService:JSONDecode(game:HttpGet(fullUrl))
-		end)
-		if success and result and result.data then
-			for _, server in ipairs(result.data) do
-				if server.playing < server.maxPlayers and server.id ~= game.JobId then
-					found = true
-					TeleportService:TeleportToPlaceInstance(game.PlaceId, server.id, LocalPlayer)
-					return
-				end
-			end
-			if result.nextPageCursor then
-				cursor = result.nextPageCursor
-			else
-				break
-			end
+		if result.nextPageCursor then
+			cursor = result.nextPageCursor
 		else
-			warn("Erro ao buscar servidores públicos.")
 			break
 		end
+	else
+		warn("Erro ao buscar servidores públicos.")
+		break
 	end
 end
-
-RejoinGame()
