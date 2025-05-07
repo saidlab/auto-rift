@@ -7,36 +7,6 @@ if not _G.Webhook then
 	warn('Put webhook link !!!!!!!!',_G.Webhook) return
 end
 
-local function RejoinGame()
-	local cursor,found = "",false
-	while not found do
-		local fullUrl = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"
-		if cursor ~= "" then
-			fullUrl = fullUrl.."&cursor="..cursor
-		end
-		local success, result = pcall(function()
-			return HttpService:JSONDecode(game:HttpGet(fullUrl))
-		end)
-		if success and result and result.data then
-			for _, server in ipairs(result.data) do
-				if server.playing < server.maxPlayers and server.id ~= game.JobId then
-					found = true
-					TeleportService:TeleportToPlaceInstance(game.PlaceId, server.id, LocalPlayer)
-					return
-				end
-			end
-			if result.nextPageCursor then
-				cursor = result.nextPageCursor
-			else
-				break
-			end
-		else
-			warn("Erro ao buscar servidores públicos.")
-			break
-		end
-	end
-end
-
 local HttpService = game:GetService("HttpService")
 local riftFolder = game:GetService("Workspace"):WaitForChild("Rendered"):WaitForChild("Rifts")
 local message = ""
@@ -55,7 +25,8 @@ local Emojis,content = {
 	['cyber-egg'] = "<:Mining_Egg:1369738274670645278>",
 	['mining-egg'] = "<:Mining_Egg:1369738274670645278>",
 	['bubble-rift'] = "<:Bubbles:1362512396991725688>",
-	['silly-egg'] = "<:Silly_Egg:1369738286393856090>"
+	['silly-egg'] = "<:Silly_Egg:1369738286393856090>",
+	['dice-chest'] = "<:Dice_Key:1369744114849153184>",
 },""
 
 for _, rift in ipairs(riftFolder:GetChildren()) do
@@ -69,11 +40,11 @@ for _, rift in ipairs(riftFolder:GetChildren()) do
 	local luckText = (luckLabel and luckLabel.Text ~= "" and luckLabel.Text) or "?"
 	local itemName = string.upper(rift.Name)
 	local EMOJI = Emojis[rift.Name] or "<:EggBlack256:1369740204922896384>"
-  
+
 	if rift.Name == 'silly-egg' then
 		content = "@everyone Alerta de Silly, Todos atrás do Stalcks!"
 	end
-  
+
 	if luckText == "?" then
 		message = message .. string.format("> %s [**%s**] ⌛ <t:%d:R> | 📍 %s\n", EMOJI, itemName, timestamp, Short(yPos))
 	else
@@ -115,5 +86,37 @@ end
 task.wait(30)
 
 queue_on_teleport(`_G.Webhook = {_G.Webhook} loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/saidlab/auto-rift/refs/heads/main/test.lua"))()`)
+
+print('Telepote Function')
+
+local function RejoinGame()
+	local cursor,found = "",false
+	while not found do
+		local fullUrl = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"
+		if cursor ~= "" then
+			fullUrl = fullUrl.."&cursor="..cursor
+		end
+		local success, result = pcall(function()
+			return HttpService:JSONDecode(game:HttpGet(fullUrl))
+		end)
+		if success and result and result.data then
+			for _, server in ipairs(result.data) do
+				if server.playing < server.maxPlayers and server.id ~= game.JobId then
+					found = true
+					TeleportService:TeleportToPlaceInstance(game.PlaceId, server.id, LocalPlayer)
+					return
+				end
+			end
+			if result.nextPageCursor then
+				cursor = result.nextPageCursor
+			else
+				break
+			end
+		else
+			warn("Erro ao buscar servidores públicos.")
+			break
+		end
+	end
+end
 
 RejoinGame()
