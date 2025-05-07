@@ -8,8 +8,8 @@ local LocalPlayer = Players.LocalPlayer
 local dadosRecebidos = TeleportService:GetLocalPlayerTeleportData()
 
 if not getgenv().Webhook then
-	warn('Put webhook link !!!!!!!!',getgenv().Webhook)
 	if not dadosRecebidos.Webhook then
+		warn('Put webhook link !!!!!!!!',getgenv().Webhook)
 		return
 	else
 		getgenv().Webhook = dadosRecebidos.Webhook
