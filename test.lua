@@ -56,7 +56,7 @@ local payload = {
 	content = content,
 	embeds = {
 		{
-			title       = "📢 NOTIFICAÇÃO RIFT SERVER TEST",
+			title       = "📢 NOTIFICAÇÃO RIFT SERVER",
 			description = message .. "\nColoque o link no Navegador para entrar no Servidor```roblox://experiences/start?placeId=85896571713843&gameInstanceId="..game.JobId.."```",
 			color       = 0xFFFF00,
 			timestamp   = DateTime.now():ToIsoDate()
