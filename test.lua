@@ -59,7 +59,7 @@ local payload = {
 	content = content,
 	embeds = {
 		{
-			title       = "📢 NOTIFICAÇÃO RIFT SERVER TEST",
+			title       = "📢 NOTIFICAÇÃO RIFT SERVER "..#game.Players:GetPlayers() ,
 			description = message .. "\nColoque o link no Navegador para entrar no Servidor```roblox://experiences/start?placeId=85896571713843&gameInstanceId="..game.JobId.."```",
 			color       = 0xFFFF00,
 			timestamp   = DateTime.now():ToIsoDate()
@@ -112,8 +112,8 @@ while not found do
 		if result.nextPageCursor then
 			cursor = result.nextPageCursor
 		else
-			print('Parou :(")
-				break
+			print("Parou :(")
+			break
 		end
 	else
 		warn("Erro ao buscar servidores públicos.")
