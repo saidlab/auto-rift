@@ -59,7 +59,7 @@ local payload = {
 	content = content,
 	embeds = {
 		{
-			title       = "📢 NOTIFICAÇÃO RIFT SERVER "..#game.Players:GetPlayers() ,
+			title       = "📢 NOTIFICAÇÃO RIFT SERVER "..#game.Players:GetPlayers().."/12" ,
 			description = message .. "\nColoque o link no Navegador para entrar no Servidor```roblox://experiences/start?placeId=85896571713843&gameInstanceId="..game.JobId.."```",
 			color       = 0xFFFF00,
 			timestamp   = DateTime.now():ToIsoDate()
