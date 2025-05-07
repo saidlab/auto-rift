@@ -5,8 +5,8 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
-if not _G.Webhook then
-	warn('Put webhook link !!!!!!!!',_G.Webhook) return
+if not getgenv().Webhook then
+	warn('Put webhook link !!!!!!!!',getgenv().Webhook) return
 end
 
 local HttpService = game:GetService("HttpService")
@@ -71,7 +71,7 @@ local requestFunction = syn and syn.request or http and http.request or http_req
 
 local success, response = pcall(function()
 	return requestFunction({
-		Url = _G.Webhook,
+		Url = getgenv().Webhook,
 		Method = "POST",
 		Headers = {
 			["Content-Type"] = "application/json"
@@ -86,7 +86,7 @@ else
 	print("[Webhook] Mensagem enviada com sucesso! Código de status:", response.StatusCode or response.statusCode)
 end
 
-queue_on_teleport("_G.Webhook=".._G.Webhook.." loadstring(game:HttpGet('https://raw.githubusercontent.com/saidlab/auto-rift/refs/heads/main/test.lua'))()")
+queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/saidlab/auto-rift/refs/heads/main/test.lua'))()")
 
 task.wait(30)
 
