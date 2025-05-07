@@ -5,8 +5,15 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
+local dadosRecebidos = TeleportService:GetLocalPlayerTeleportData()
+
 if not getgenv().Webhook then
-	warn('Put webhook link !!!!!!!!',getgenv().Webhook) return
+	warn('Put webhook link !!!!!!!!',getgenv().Webhook)
+	if not dadosRecebidos.Webhook then
+		return
+	else
+		getgenv().Webhook = dadosRecebidos.Webhook
+	end
 end
 
 local HttpService = game:GetService("HttpService")
@@ -91,6 +98,10 @@ queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/sa
 task.wait(30)
 
 print('Telepote Function')
+
+teleportOptions:SetTeleportData({
+    Webhook = getgenv().Webhook
+})
 
 local cursor,found = "",false
 while not found do
