@@ -5,6 +5,8 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
+task.wait(30)
+
 if not _G.Webhook then
 	local Get = readfile("webhook.txt")
 	if Get:find("https") then
