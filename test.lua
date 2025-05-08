@@ -15,7 +15,7 @@ if not _G.Webhook then
 	end
 end
 
-local Get = readfile("webhook.txt")
+local Get = pcall(readfile,"webhook.txt")
 if Get ~= _G.Webhook then
 	writefile("webhook.txt", _G.Webhook)
 end
