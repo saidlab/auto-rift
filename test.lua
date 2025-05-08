@@ -5,16 +5,21 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
-local dadosRecebidos = TeleportService:GetLocalPlayerTeleportData()
-
-if not getgenv().Webhook then
-	if not dadosRecebidos.Webhook then
-		warn('Put webhook link !!!!!!!!',getgenv().Webhook)
-		return
+if not _G.Webhook then
+	local Get = readfile("webhook.txt")
+	if Get:find("https") then
+		_G.Webhook = Get
 	else
-		getgenv().Webhook = dadosRecebidos.Webhook
+		warn('Coloque um link de webhook !!!')
+		return
 	end
 end
+
+local Get = readfile("webhook.txt")
+if Get ~= _G.Webhook then
+	writefile("webhook.txt", _G.Webhook)
+end
+
 
 local HttpService = game:GetService("HttpService")
 local riftFolder = game:GetService("Workspace"):WaitForChild("Rendered"):WaitForChild("Rifts")
@@ -78,7 +83,7 @@ local requestFunction = syn and syn.request or http and http.request or http_req
 
 local success, response = pcall(function()
 	return requestFunction({
-		Url = getgenv().Webhook,
+		Url = _G.Webhook,
 		Method = "POST",
 		Headers = {
 			["Content-Type"] = "application/json"
@@ -98,10 +103,6 @@ queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/sa
 task.wait(30)
 
 print('Telepote Function')
-
-teleportOptions:SetTeleportData({
-    Webhook = getgenv().Webhook
-})
 
 local cursor,found = "",false
 while not found do
